@@ -19,13 +19,7 @@ export default function Articles(props) {
     getArticles();
   }, [])
 
-  // for debugging
-  useEffect(() => {
-    console.log(`currentArticleId: ${currentArticleId}`);
-  }, [currentArticleId])
-
   const editHandler = (id) => {
-    console.log(`id: ${id}`);
     setCurrentArticleId(id);
   }
 

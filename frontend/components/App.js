@@ -27,9 +27,8 @@ export default function App() {
   const redirectToArticles = () => { 
     navigate('/articles')
    }
-   
-   // finCurrentArticle should return the article with the id of currentArticleId,
-   // if there is no currentArticleId it should return null, if article state is undefined it should return null as well
+  
+   // function that finds the current article
   const findCurrentArticle = () => {
       if (!currentArticleId || !articles) {
         return null;
@@ -39,24 +38,13 @@ export default function App() {
   const currentArticle = findCurrentArticle();
 
   const logout = () => {
-    // ✨ implement
-    // If a token is in local storage it should be removed,
-    // and a message saying "Goodbye!" should be set in its proper state.
-    // In any case, we should redirect the browser back to the login screen,
-    // using the helper above.
     localStorage.removeItem('token');
     setMessage('Goodbye!');
     redirectToLogin();
   }
 
   const login = ({ username, password }) => {
-    // ✨ implement
-    // We should flush the message state, turn on the spinner
-    // and launch a request to the proper endpoint.
-    // On success, we should set the token to local storage in a 'token' key,
-    // put the server success message in its proper state, and redirect
-    // to the Articles screen. Don't forget to turn off the spinner!
-    // let's start: 
+
     setMessage('');
     setSpinnerOn(true);
     axios.post(loginUrl, {username, password})
@@ -74,19 +62,10 @@ export default function App() {
   }
 
   const getArticles = () => {
-    // ✨ implement
-    // We should flush the message state, turn on the spinner
-    // and launch an authenticated request to the proper endpoint.
-    // On success, we should set the articles in their proper state and
-    // put the server success message in its proper state.
-    // If something goes wrong, check the status of the response:
-    // if it's a 401 the token might have gone bad, and we should redirect to login.
-    // Don't forget to turn off the spinner!
     setMessage('');
     setSpinnerOn(true);
     axiosWithAuth().get(articlesUrl)
       .then(res => {
-        console.log(res)
         setArticles(res.data.articles);
         setMessage(res.data.message);
         setSpinnerOn(false);
@@ -100,15 +79,10 @@ export default function App() {
   }
 
   const postArticle = article => {
-    // ✨ implement
-    // The flow is very similar to the `getArticles` function.
-    // You'll know what to do! Use log statements or breakpoints
-    // to inspect the response from the server.
     setMessage('');
     setSpinnerOn(true);
     axiosWithAuth().post(articlesUrl, article)
       .then(res => {
-        console.log(res)
         setArticles([...articles, res.data.article])
         setMessage(res.data.message);
         setSpinnerOn(false);
@@ -121,12 +95,9 @@ export default function App() {
   }
 
   const updateArticle = ({ article_id, article }) => {
-    // ✨ implement
-    // You got this!
     setSpinnerOn(true);
     axiosWithAuth().put(`${articlesUrl}/${article_id}`, article)
       .then(res => {
-        console.log(res)
         const updatedArticle = res.data.article;
         setArticles(prevArticles => {
           return prevArticles.map((art) => 
@@ -144,11 +115,9 @@ export default function App() {
   }
 
   const deleteArticle = article_id => {
-    // ✨ implement
     setSpinnerOn(true);
     axiosWithAuth().delete(`${articlesUrl}/${article_id}`)
       .then(res => {
-        console.log(res)
         setArticles(prevArticles => prevArticles.filter(article => article.article_id !== article_id));
         setMessage(res.data.message);
         setSpinnerOn(false);
@@ -162,7 +131,6 @@ export default function App() {
 
 
   return (
-    // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <>
       <Spinner on={spinnerOn}/>
       <Message message={message}/>
